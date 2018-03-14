@@ -15,3 +15,6 @@ The current implementation supposes the use of [GPS Logger](https://code.mendhak
 
 Graphics and geocoding by [Yandex](https://maps.ya.ru) free API.
 
+This picture was grabbed from GPS Logger site:
+
+![Custom URL Setup](img/21sslvalidation.gif)
