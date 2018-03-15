@@ -39,9 +39,19 @@ function fetch($url) {
 
 function save($fn, $data) {
     switch (gettype($data)) {
-    case 'array': $data = implode("\n", $data); break;
+        case 'array':
+            $data = implode("\n", $data);
+        case 'integer':
+        case 'double':
+            $data = ''.$data;
+        case 'string': break;
+        case 'boolean': $data = $data ? '=TRUE' : '=FALSE'; break;
+        case 'NULL': $data = '=NULL'; break;
+        default:
+            $data = json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+            break;
     }
-    $fp = fopen($fn, 'w');
+    $fp = fopen($fn, 'a');
     fputs($fp, $data);
     fclose($fp);
 }
@@ -285,24 +295,28 @@ function show_request() {
 <?php
 }
 
-function save_request($fp) {
-    if (isset($_SERVER['REMOTE_ADDR']))
-        fputs($fp, "/ REMOTE_ADDR=".$_SERVER['REMOTE_ADDR']."\n");
-    if (isset($_SERVER['HTTP_REFERER']))
-        fputs($fp, "/ HTTP_REFERER=".$_SERVER['HTTP_REFERER']."\n");
-    if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-        fputs($fp, "/ HTTP_X_FORWARDED_FOR=".$_SERVER['HTTP_X_FORWARDED_FOR']."\n");
+function get_request($fp) {
+    $u = isset($_REQUEST['u']) ? $_REQUEST['u'] : false;
+    $data = array();
+    $data[] = '# '.strftime('%F %T %z').($u ? " $u" : '');
+
+    $srv = array('REMOTE_ADDR', 'HTTP_REFERER', 'HTTP_X_FORWARDED_FOR');
+    foreach($srv as $k) {
+        if (isset($_SERVER[$k]))
+            $data[] = "/ $k=".$_SERVER[$k];
+    }
 
     $hdr = apache_request_headers();
     if (!isset($hdr['User-Agent']) or $hdr['User-Agent'] != 'okhttp/3.7.0') {
-        foreach($hdr as $k => $v) { fputs($fp, "% $k=$v\n"); }
+        foreach($hdr as $k => $v) { $data[] = "% $k=$v"; }
     }
 
     foreach($_REQUEST as $k => $v) {
         if ($k == 'u' or $v == '' or $v == '0' or $v == '0.0')
             continue;
-        fputs($fp, "$k=$v\n");
+        $data[] = "$k=$v";
     }
+    return $data;
 }
 
 if (count($_REQUEST) == 0) {
@@ -310,19 +324,12 @@ if (count($_REQUEST) == 0) {
 } elseif (count($_REQUEST) == 1 and isset($_REQUEST['u'])) {
     show_request();
 } elseif (isset($_REQUEST['u'])) {
-    $u = $_REQUEST['u'];
-    echo "# ".$_SERVER['REMOTE_ADDR']."; u=$u \n";
-    $fp = fopen("track.log", "a");
-    fputs($fp, '# '.strftime('%F %T %z')." $u\n");
-    save_request($fp);
-    fclose($fp);
+    echo "# ".$_SERVER['REMOTE_ADDR'].' '.$_REQUEST['u']."\n";
+    save("track.log", get_request());
     echo "ok ($u)\n";
 } else {
-    echo "# ".$_SERVER['REMOTE_ADDR']." \n";
-    $fp = fopen("track.log", "a");
-    fputs($fp, '# '.strftime('%F %T %z%n'));
-    save_request($fp);
-    fclose($fp);
+    echo "# ".$_SERVER['REMOTE_ADDR']."\n";
+    save("track.log", get_request());
     echo "ok\n";
 }
 # vim: set ft=php ai et ts=4 sts=4 sw=4 : EOF ?>
