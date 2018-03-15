@@ -16,7 +16,8 @@ When invoked with only `&u=USER` argument, it will display the last point report
 
 The current implementation supposes the use of [GPS Logger](https://code.mendhak.com/gpslogger/).
 
-Graphics and geocoding by [Yandex](https://maps.ya.ru) free API.
+Graphics and geocoding by [Yandex](https://maps.ya.ru) and [Sputnik](http://maps.sputnik.ru)
+ free API.
 
 ## Sample log entries
 
