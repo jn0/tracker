@@ -325,4 +325,4 @@ if (count($_REQUEST) == 0) {
     fclose($fp);
     echo "ok\n";
 }
-?>
+# vim: set ft=php ai et ts=4 sts=4 sw=4 : EOF ?>
