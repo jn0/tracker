@@ -217,7 +217,7 @@ function save_request($fp) {
     foreach($_REQUEST as $k => $v) {
         if ($k == 'u' or $v == '' or $v == '0' or $v == '0.0')
             continue;
-        fputs($fp, $s."$k=$v\n");
+        fputs($fp, "$k=$v\n");
     }
 }
 
