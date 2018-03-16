@@ -323,13 +323,10 @@ if (count($_REQUEST) == 0) {
     echo "empty\n";
 } elseif (count($_REQUEST) == 1 and isset($_REQUEST['u'])) {
     show_request();
-} elseif (isset($_REQUEST['u'])) {
-    echo "# ".$_SERVER['REMOTE_ADDR'].' '.$_REQUEST['u']."\n";
-    save("track.log", get_request());
-    echo "ok ($u)\n";
 } else {
-    echo "# ".$_SERVER['REMOTE_ADDR']."\n";
+    $u = isset($_REQUEST['u']) ? (" (".$_REQUEST['u'].")") : '';
+    echo "# ".$_SERVER['REMOTE_ADDR']."$u\n";
     save("track.log", get_request());
-    echo "ok\n";
+    echo "ok$u\n";
 }
 # vim: set ft=php ai et ts=4 sts=4 sw=4 : EOF ?>
