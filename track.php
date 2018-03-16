@@ -40,7 +40,7 @@ function fetch($url) {
 function save($fn, $data) {
     switch (gettype($data)) {
         case 'array':
-            $data = implode("\n", $data);
+            $data = implode("\n", $data) . "\n";
         case 'integer':
         case 'double':
             $data = ''.$data;
