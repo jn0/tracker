@@ -235,6 +235,13 @@ function show_request() {
         }
     }
     fclose($fp);
+    if ($n == $N) {
+        # point accumulated
+        $cnt++;
+        foreach($point as $k=>$v) {
+            $last[$k] = $v;
+        }
+    }
 
     $dt = dhms(time() - strtotime($last['time']));
 ?><!DOCTYPE html>
