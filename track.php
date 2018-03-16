@@ -295,7 +295,7 @@ function show_request() {
 <?php
 }
 
-function get_request($fp) {
+function get_request() {
     $u = isset($_REQUEST['u']) ? $_REQUEST['u'] : false;
     $data = array();
     $data[] = '# '.strftime('%F %T %z').($u ? " $u" : '');
