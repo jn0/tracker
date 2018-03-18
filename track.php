@@ -2,7 +2,14 @@
 if (count($_REQUEST) != 1 or !isset($_REQUEST['u']))
 	header("Content-Type: text/plain; charset=UTF-8");
 
+$u = isset($_REQUEST['u']) ? (" (".$_REQUEST['u'].")") : '';
+
 $API_SPUTNIK = '';
+
+function cache_file_name($id, $type, $suffix) {
+    $u = isset($_REQUEST['u']) ? ("-".$_REQUEST['u']) : '';
+    return "map-$type$u-$id.$suffix";
+}
 
 function d_fract($dt, $q, $sig) {
     $o = null;
@@ -57,7 +64,7 @@ function save($fn, $data) {
 }
 
 function get_picture_sputnik($point, $id, $zoom=13, $layer='map') {
-    $fn = "map-sputnik-$id.png";
+    $fn = cache_file_name($id, 'sputnik', 'png');
     if (!file_exists($fn)) {
         $LL = 
 
@@ -77,7 +84,7 @@ function get_picture_sputnik($point, $id, $zoom=13, $layer='map') {
 function get_places_sputnik($point, $id) {
     global $API_SPUTNIK;
 
-    $fn = "map-sputnik-$id.cache";
+    $fn = cache_file_name($id, 'sputnik', 'cache');
     if (file_exists($fn)) {
         $pl = File($fn, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
         return $pl;
@@ -110,7 +117,7 @@ function get_places_sputnik($point, $id) {
 }
 
 function get_picture_yandex($point, $id, $zoom=13, $layer='map') {
-    $fn = "map-yandex-$id.png";
+    $fn = cache_file_name($id, 'yandex', 'png');
     if (!file_exists($fn)) {
         $LL = $point['lon'].','.$point['lat'];
 
@@ -127,7 +134,7 @@ function get_picture_yandex($point, $id, $zoom=13, $layer='map') {
 }
 
 function get_places_yandex($point, $id) {
-    $fn = "map-yandex-$id.cache";
+    $fn = cache_file_name($id, 'yandex', 'cache');
     if (file_exists($fn)) {
         $pl = File($fn, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
     } else {
@@ -331,7 +338,6 @@ if (count($_REQUEST) == 0) {
 } elseif (count($_REQUEST) == 1 and isset($_REQUEST['u'])) {
     show_request();
 } else {
-    $u = isset($_REQUEST['u']) ? (" (".$_REQUEST['u'].")") : '';
     echo "# ".$_SERVER['REMOTE_ADDR']."$u\n";
     save("track.log", get_request());
     echo "ok$u\n";
