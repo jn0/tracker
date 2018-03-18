@@ -8,7 +8,7 @@ $API_SPUTNIK = '';
 
 function cache_file_name($id, $type, $suffix) {
     $u = isset($_REQUEST['u']) ? ("-".$_REQUEST['u']) : '';
-    return "map-$type$u-$id.$suffix";
+    return "cache/map-$type$u-$id.$suffix";
 }
 
 function d_fract($dt, $q, $sig) {
