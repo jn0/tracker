@@ -267,7 +267,7 @@ function show_request() {
 <body>
 <div id=top>
 <?php
-    echo "<ul id=args><li>point: $cnt</li>\n<li>back: $dt</li>\n";
+    echo "<ul id=args><li>point: $cnt".($u ? " ($u)" : '')."</li>\n<li>back: $dt</li>\n";
     foreach($last as $k=>$v) { echo "<li>$k: $v</li>\n"; }
     echo "</ul>\n<hr />\n";
 
