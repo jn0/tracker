@@ -62,6 +62,12 @@ function save($fn, $data) {
     $fp = fopen($fn, 'a');
     fputs($fp, $data);
     fclose($fp);
+
+    if (substr($fn, -4) == '.png') {
+        $o = array();
+        $rc = 0;
+        exec('optipng -quiet -force -fix -- '.$fn.' >/dev/null 2>&1', $o, $rc);
+    }
 }
 
 function get_picture_sputnik($point, $id, $zoom=13, $layer='map') {
