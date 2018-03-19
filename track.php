@@ -1,5 +1,6 @@
 <?php
-if (count($_REQUEST) != 1 or !isset($_REQUEST['u']))
+if ((count($_REQUEST) != 1 or !isset($_REQUEST['u']))
+and (count($_REQUEST) != 2 or !isset($_REQUEST['u']) or !isset($_REQUEST['n'])))
 	header("Content-Type: text/plain; charset=UTF-8");
 
 $u = isset($_REQUEST['u']) ? (" (".$_REQUEST['u'].")") : '';
@@ -199,6 +200,7 @@ function get_places_yandex($point, $id) {
 
 function show_request() {
     $u = $_REQUEST['u'];
+    $c = isset($_REQUEST['n']) ?  $_REQUEST['n'] : null;
     $matched = false;
     $point = array('lat'=>null, 'lon'=>null, 'time'=>null, 'acc'=>null);
     $last = array();
@@ -216,6 +218,12 @@ function show_request() {
             if ($n == $N) {
                 # point accumulated
                 $cnt++;
+                if (!is_null($c)) {
+                    if ($c == $cnt) {
+                        $cnt--;
+                        break;
+                    }
+                }
                 foreach($point as $k=>$v) {
                     $last[$k] = $v;
                     $point[$k] = null;
@@ -336,6 +344,8 @@ function get_request() {
 if (count($_REQUEST) == 0) {
     echo "empty\n";
 } elseif (count($_REQUEST) == 1 and isset($_REQUEST['u'])) {
+    show_request();
+} elseif (count($_REQUEST) == 2 and isset($_REQUEST['u']) and isset($_REQUEST['n'])) {
     show_request();
 } else {
     echo "# ".$_SERVER['REMOTE_ADDR']."$u\n";
