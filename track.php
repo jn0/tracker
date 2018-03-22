@@ -289,11 +289,13 @@ function show_request() {
     $url = 'https://yandex.ru/maps/?mode=search&text='.$last['lat'].','.$last['lon'];
     echo "<div class=map><a href=\"$url\"><img src=\"$fn\" alt=\"[yandex map]\" /></a></div>\n";
 
+    /*
     $fn = get_picture_sputnik($last, $cnt);
     $url = 'https://maps.sputnik.ru/?lat='.$last['lat'].'&lon='.$last['lon'];
     echo "<div class=map><a href=\"$url\"><img src=\"$fn\" alt=\"[sputnik map]\" /></a></div>\n";
 
     echo "<hr />\n";
+    */
 
     $pl = get_places_yandex($last, $cnt);
     reset($pl);
