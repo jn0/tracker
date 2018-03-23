@@ -277,22 +277,22 @@ function show_request() {
   div#mytop { max-width: 800px; margin-left: auto; margin-right: auto; }
   div.mymap { width: 400px; height: 400px; float: left; }
   div.myplaces { float: left; width: 400px; }
-  ul#myargs>li { display: inline-block; width: 32ex; }
+  /* ul#myargs { max-width: 300px; } */
+  ul#myargs>li { display: inline-block; width: 25ex; }
   hr { clear: both }
-  button { width: 95% }
+  button { width: 4em; float: left; margin-top: 10pt; vertical-align: middle; margin-right: 10px; }
  </style>
 </head>
 <body class=container>
 <div id=mytop>
 <?php
     echo '<button autofocus value="Refresh" onClick="window.location.reload()">'
-        // .'<img src="reload16.png" alt="[REFRESH]" />'
-        .'<span><i class="glyphicon glyphicon-refresh" style="color:red"></i>&nbsp;REFRESH</span>'
+        .'<i class="glyphicon glyphicon-refresh" style="color:red; font-size:24pt"></i>'
         .'</button>'
         ."\n";
 
     echo "<ul id=myargs><li>point: $cnt".($u ? " ($u)" : '')."</li>\n<li>back: $dt</li>\n";
-    foreach($last as $k=>$v) { echo "<li>$k: $v</li>\n"; }
+    foreach($last as $k=>$v) { echo "<li>$k: ".substr($v, 0, 19)."</li>\n"; }
     echo "</ul>\n";
 
     echo "<hr />\n";
