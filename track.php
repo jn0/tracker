@@ -270,42 +270,48 @@ function show_request() {
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title><?php echo("$cnt".($u ? " ($u)" : '')) ?></title>
+ <link rel="stylesheet" href="bootstrap.min.css">
  <style>
   body { font-size: 12pt }
-  div#top { max-width: 800px; margin-left: auto; margin-right: auto; }
-  div.map { width: 400px; height: 400px; float: left; }
-  div.places { float: left; width: 400px; }
-  ul#args>li { display: inline-block; width: 32ex; }
+  div#mytop { max-width: 800px; margin-left: auto; margin-right: auto; }
+  div.mymap { width: 400px; height: 400px; float: left; }
+  div.myplaces { float: left; width: 400px; }
+  ul#myargs>li { display: inline-block; width: 32ex; }
   hr { clear: both }
   button { width: 95% }
  </style>
 </head>
-<body>
-<div id=top>
+<body class=container>
+<div id=mytop>
 <?php
-    echo "<button autofocus value=\"Refresh\" onClick=\"window.location.reload()\">"
-        ."<img src=reload16.png alt=\"[REFRESH]\"  />&nbsp;REFRESH"
-        ."</button>\n";
-    echo "<ul id=args><li>point: $cnt".($u ? " ($u)" : '')."</li>\n<li>back: $dt</li>\n";
+    echo '<button autofocus value="Refresh" onClick="window.location.reload()">'
+        // .'<img src="reload16.png" alt="[REFRESH]" />'
+        .'<span><i class="glyphicon glyphicon-refresh" style="color:red"></i>&nbsp;REFRESH</span>'
+        .'</button>'
+        ."\n";
+
+    echo "<ul id=myargs><li>point: $cnt".($u ? " ($u)" : '')."</li>\n<li>back: $dt</li>\n";
     foreach($last as $k=>$v) { echo "<li>$k: $v</li>\n"; }
     echo "</ul>\n";
+
     echo "<hr />\n";
 
     $fn = get_picture_yandex($last, $cnt);
     $url = 'https://yandex.ru/maps/?mode=search&text='.$last['lat'].','.$last['lon'];
-    echo "<div class=map><a href=\"$url\"><img src=\"$fn\" alt=\"[yandex map]\" /></a></div>\n";
+    echo "<div class=mymap><a href=\"$url\"><img src=\"$fn\" alt=\"[yandex map]\" /></a></div>\n";
 
     /*
     $fn = get_picture_sputnik($last, $cnt);
     $url = 'https://maps.sputnik.ru/?lat='.$last['lat'].'&lon='.$last['lon'];
-    echo "<div class=map><a href=\"$url\"><img src=\"$fn\" alt=\"[sputnik map]\" /></a></div>\n";
+    echo "<div class=mymap><a href=\"$url\"><img src=\"$fn\" alt=\"[sputnik map]\" /></a></div>\n";
 
     echo "<hr />\n";
     */
 
     $pl = get_places_yandex($last, $cnt);
     reset($pl);
-    echo "<div class=places><ul>\n";
+    echo "<div class=myplaces><ul>\n";
     $LL = $last['lon'].','.$last['lat'];
     for ($i = 0; $i < count($pl); $i++) {
         $url = "https://yandex.ru/maps/213/moscow/?mode=search"
@@ -316,7 +322,7 @@ function show_request() {
 
     $pl = get_places_sputnik($last, $cnt);
     reset($pl);
-    echo "<div class=places><ul>\n";
+    echo "<div class=myplaces><ul>\n";
     $LL = $last['lon'].','.$last['lat'];
     for ($i = 0; $i < count($pl); $i++) {
         $url = "https://maps.sputnik.ru/?zoom=14"

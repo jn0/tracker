@@ -8,3 +8,4 @@ INSTALL = install
 
 install:	$(FILE)
 	$(INSTALL) -t $(TARGET) $^
+	cp -r fonts $(TARGET)/../
