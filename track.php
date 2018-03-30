@@ -292,7 +292,13 @@ function show_request() {
         ."\n";
 
     echo "<ul id=myargs><li>point: $cnt".($u ? " ($u)" : '')."</li>\n<li>back: $dt</li>\n";
-    foreach($last as $k=>$v) { echo "<li>$k: ".substr($v, 0, 19)."</li>\n"; }
+    $show = array('time', 'acc');
+    foreach ($show as $k) {
+        if (isset($last[$k])) {
+            $v = str_replace('T', ' ', explode(".", $last[$k])[0]); // preprocess it a bit...
+            echo "<li>$k: ".substr($v, 0, 19)."</li>\n";
+        }
+    }
     echo "</ul>\n";
 
     echo "<hr />\n";
