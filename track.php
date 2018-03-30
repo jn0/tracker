@@ -320,6 +320,7 @@ function show_request() {
     }
     echo "</ul></div>\n";
 
+    /*
     $pl = get_places_sputnik($last, $cnt);
     reset($pl);
     echo "<div class=myplaces><ul>\n";
@@ -332,6 +333,7 @@ function show_request() {
         echo "<li><a href=\"$url\">".$pl[$i]."</a></li>\n";
     }
     echo "</ul></div>\n";
+    */
 
 ?></div></body></html>
 <?php
