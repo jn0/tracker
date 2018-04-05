@@ -70,11 +70,28 @@ function save($fn, $data) {
     }
 }
 
+function get_picture_mapbox($point, $id, $zoom=13, $bearing=0, $pitch=0) {
+    global $MAPBOX;
+    $MAPBOX = File('/home/jno/.jno/mapbox.com');
+    $MAPBOX = trim($MAPBOX[0]);
+    $fn = cache_file_name($id, 'mapbox', 'png');
+    if (!file_exists($fn)) {
+        $lon = $point['lon'];
+        $lat = $point['lat'];
+        $url = "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static"
+                ."/pin-s-1+0F0($lon,$lat)"
+                ."/$lon,$lat,$zoom,$bearing,$pitch"
+                ."/400x400"
+                ."?access_token=".$MAPBOX
+                .'';
+        save($fn, fetch($url));
+    }
+    return $fn;
+}
+
 function get_picture_sputnik($point, $id, $zoom=13, $layer='map') {
     $fn = cache_file_name($id, 'sputnik', 'png');
     if (!file_exists($fn)) {
-        $LL = 
-
         $url = 'http://static-api.maps.sputnik.ru/v1/?'
                 ."z=$zoom"
                 .'&clng='.$point['lon'].'&clat='.$point['lat']
@@ -304,17 +321,19 @@ function show_request() {
 
     echo "<hr />\n";
 
+    $fn = get_picture_mapbox($last, $cnt);
+    echo "<div class=mymap><a href=\"#\"><img src=\"$fn\" alt=\"[mapbox OSM]\" /></a></div>\n";
+/*
     $fn = get_picture_yandex($last, $cnt);
     $url = 'https://yandex.ru/maps/?mode=search&text='.$last['lat'].','.$last['lon'];
     echo "<div class=mymap><a href=\"$url\"><img src=\"$fn\" alt=\"[yandex map]\" /></a></div>\n";
 
-    /*
     $fn = get_picture_sputnik($last, $cnt);
     $url = 'https://maps.sputnik.ru/?lat='.$last['lat'].'&lon='.$last['lon'];
     echo "<div class=mymap><a href=\"$url\"><img src=\"$fn\" alt=\"[sputnik map]\" /></a></div>\n";
 
     echo "<hr />\n";
-    */
+*/
 
     $pl = get_places_yandex($last, $cnt);
     reset($pl);
